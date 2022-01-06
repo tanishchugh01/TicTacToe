@@ -1,8 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-//char square[10] = {'o','1','2','3','4','5','6','7','8','9'};
-
 int checkwin(char[]);
 void board(char[]);
 void singleplayer(char[]);
@@ -13,19 +11,28 @@ void start_menu();
 int main()
 {
     start_menu();
+    
     return 0;
 }
 
 void start_menu()
 {
+    system("cls");
+    
+    cout << "\n\n\tTic Tac Toe\n\n";
+    
     int continu;
     int singlevsdouble;
+    
     do
     {
         char square[10] = {'o','1','2','3','4','5','6','7','8','9'};
+        
         cout<<"1.)Two Player game"<<endl;
         cout<<"2.)Player v/s computer"<<endl;
+        
         cin>>singlevsdouble;
+        
         switch(singlevsdouble)
         {
             case 1:twoplayer(square);             break;
@@ -33,9 +40,13 @@ void start_menu()
             default:cout<<"Invalid input";
                     start_menu();
         }
+        
         cout<<"\nTry Again?(0/1)";
+        
         cin>>continu;
+        
         cout<<endl;
+    
     }while(continu);
 }
 
@@ -43,23 +54,30 @@ void singleplayer(char square[])
 {
     int player = 1,i,choice;
     char mark;
+    
     do
     {
         int randm;
+    
         srand(time(NULL));
         board(square);
+    
         player=(player%2)?1:2;
+    
         if(player==2)
         {
             cout << "Player " << player << ", enter a number:  ";
+    
             cin >> choice;
         }
         else
         {
             cin.get();
             cin.ignore();
+    
             choice=random_mark(square);
         }
+    
         mark=(player == 1) ? 'X' : 'O';
 
         if (choice == 1 && square[1] == '1')
@@ -94,6 +112,7 @@ void singleplayer(char square[])
             cout<<"Invalid move ";
 
             player--;
+      
             cin.ignore();
             cin.get();
         }
@@ -101,13 +120,18 @@ void singleplayer(char square[])
 
         player++;
     }while(i==-1);
+   
     board(square);
+   
     if(i==1)
-
+    {
         cout<<"==>\aPlayer "<<--player<<" win ";
+    }
     else
+    {
         cout<<"==>\aGame draw";
-
+    }
+    
     cin.ignore();
     cin.get();
 }
@@ -115,21 +139,22 @@ void singleplayer(char square[])
 
 int random_mark(char square[])
 {
-    int randm;
-    randm=rand()%9+1;
+    int randm = rand()%9+1;
+ 
     if(square[randm]!='X'&&square[randm]!='O')
     {
         return randm;
     }
+ 
     return random_mark(square);
 }
 
 
 void twoplayer(char square[])
 {
-    	int player = 1,i,choice;
-
+    int player = 1,i,choice;
     char mark;
+    
     do
     {
         board(square);
@@ -173,20 +198,25 @@ void twoplayer(char square[])
 
             player--;
             cin.ignore();
-            // cin.get();
-            getc();
+            cin.get();
+            // getc();
         }
         i=checkwin(square);
 
         player++;
     }while(i==-1);
+    
     board(square);
+    
     if(i==1)
-
+    {
         cout<<"==>\aPlayer "<<--player<<" win ";
+    }
     else
+    {
         cout<<"==>\aGame draw";
-
+    }
+    
     cin.ignore();
     cin.get();
 }
@@ -229,6 +259,7 @@ int checkwin(char square[])
 void board(char square[])
 {
     system("cls");
+    
     cout << "\n\n\tTic Tac Toe\n\n";
 
     cout << "Player 1 (X)  -  Player 2 (O)" << endl << endl;
