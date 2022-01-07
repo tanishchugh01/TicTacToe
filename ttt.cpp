@@ -120,13 +120,13 @@ void singleplayer(char* square)
         }
         else
         {
-            cout<<"Invalid move ";
+            cout<<"Invalid move "<<endl;
 
             player--;
       
             string continu;
 
-            cout<<"You can press 0 to end this game and move to main menu :)"<<endl;
+            cout<<"\nYou can press 0 to end this game \nand move to main menu"<<endl;
             cout<<"Press any other number to continue"<<endl;
             
             cin>>continu;
@@ -168,19 +168,6 @@ void singleplayer(char* square)
     cin.get();
 }
 
-int random_mark(char* square)
-{
-    int randm = rand()%9+1;
- 
-    if(square[randm]!='X'&&square[randm]!='O')
-    {
-        return randm;
-    }
- 
-    return random_mark(square);
-}
-
-
 void twoplayer(char* square)
 {
     int player = 1,i,choice;
@@ -210,7 +197,7 @@ void twoplayer(char* square)
       
             string continu;
 
-            cout<<"You can press 0 to end this game and move to main menu"<<endl;
+            cout<<"\nYou can press 0 to end this game \nand move to main menu"<<endl;
             cout<<"Press any other number to continue"<<endl;
             
             cin>>continu;
@@ -240,6 +227,18 @@ void twoplayer(char* square)
     
     cin.ignore();
     cin.get();
+}
+
+int random_mark(char* square)
+{
+    int randm = rand()%9+1;
+ 
+    if(square[randm]!='X'&&square[randm]!='O')
+    {
+        return randm;
+    }
+ 
+    return random_mark(square);
 }
 
 int checkwin(char* square)
