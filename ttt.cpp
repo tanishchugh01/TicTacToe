@@ -2,7 +2,7 @@
 using namespace std;
 
 int checkwin(char[]);
-void board(char[]);
+void board(char[],bool);
 void singleplayer(char[]);
 void twoplayer(char[]);
 int random_mark(char[]);
@@ -28,30 +28,33 @@ void start_menu()
         
         char square[10] = {'o','1','2','3','4','5','6','7','8','9'};
         
-        cout<<"1.)Two Player game"<<endl;
-        cout<<"2.)Player v/s computer"<<endl;
+        cout<<"1.)Player v/s computer"<<endl;
+        cout<<"2.)Two Player game"<<endl;
+        cout<<"\n0.)Exit"<<endl;
         
         cin>>singlevsdouble;
         
         switch(singlevsdouble)
         {
-            case 1:twoplayer(square);             break;
-            case 2:singleplayer(square);          break;
-           
-            default:cout<<"Invalid input";
-                    start_menu();
+            case 1: singleplayer(square);          break;
+            case 2: twoplayer(square);             break;
+            case 0: exit(0);
+            
+            default:
+            {
+                cout<<"Invalid input";
+                
+                cin.ignore();
+                cin.get();
+                
+                start_menu();
+            }
         }
         
-        cout<<"\nTry Again?(0/1)";
-        
-        cin>>continu;
-        
-        cout<<endl;
-    
-    }while(continu);
+    }while(true);
 }
 
-void singleplayer(char square[])
+void singleplayer(char* square)
 {
     int player = 1,i,choice;
     char mark;
@@ -61,18 +64,20 @@ void singleplayer(char square[])
         int randm;
     
         srand(time(NULL));
-        board(square);
+        
+        board(square,true);
     
         player=(player%2)?1:2;
     
         if(player==2)
         {
-            cout << "Player " << player << ", enter a number:  ";
+            cout << "Your turn, enter a number:  ";
     
             cin >> choice;
         }
         else
         {
+            cout<<"My turn, press and key to continue";
             cin.get();
             cin.ignore();
     
@@ -108,12 +113,10 @@ void singleplayer(char square[])
         // else if (choice == 9 && square[9] == '9')
 
         //     square[9] = mark;
-        if(choice>0  &&  choice<10)
+        if( (choice>0  &&  choice<10)
+            &&  (square[choice]== ('0'+choice) )  )
         {
-            if(square[choice]== ('0'+choice) )
-            {
-                square[choice]=mark;
-            }
+            square[choice]=mark;
         }
         else
         {
@@ -121,8 +124,17 @@ void singleplayer(char square[])
 
             player--;
       
-            cin.ignore();
-            cin.get();
+            string continu;
+
+            cout<<"You can press 0 to end this game and move to main menu :)"<<endl;
+            cout<<"Press any other number to continue"<<endl;
+            
+            cin>>continu;
+
+            if(continu=="0")
+            {
+                return;
+            }
         }
         
         i=checkwin(square);
@@ -130,12 +142,23 @@ void singleplayer(char square[])
         player++;
     }while(i==-1);
    
-    board(square);
-   
+    board(square,true);
+    
+    player--;
+    
     if(i==1)
     {
-        cout<<"==>\aPlayer "<<--player<<" win ";
+        if(player==1)
+        {
+            cout<<"==>Hello loser :)";
+        }
+        else
+        {
+            cout<<"==>You won!!"<<endl;
+            cout<<"I think, I am in right hands..Huh";
+        }
     }
+    
     else
     {
         cout<<"==>\aGame draw";
@@ -145,8 +168,7 @@ void singleplayer(char square[])
     cin.get();
 }
 
-
-int random_mark(char square[])
+int random_mark(char* square)
 {
     int randm = rand()%9+1;
  
@@ -159,14 +181,15 @@ int random_mark(char square[])
 }
 
 
-void twoplayer(char square[])
+void twoplayer(char* square)
 {
     int player = 1,i,choice;
     char mark;
     
     do
     {
-        board(square);
+        board(square,false);
+        
         player=(player%2)?1:2;
 
         cout << "Player " << player << ", enter a number:  ";
@@ -174,56 +197,37 @@ void twoplayer(char square[])
 
         mark=(player == 1) ? 'X' : 'O';
 
-        // if (choice == 1 && square[1] == '1')
-
-        //     square[1] = mark;
-        // else if (choice == 2 && square[2] == '2')
-
-        //     square[2] = mark;
-        // else if (choice == 3 && square[3] == '3')
-
-        //     square[3] = mark;
-        // else if (choice == 4 && square[4] == '4')
-
-        //     square[4] = mark;
-        // else if (choice == 5 && square[5] == '5')
-
-        //     square[5] = mark;
-        // else if (choice == 6 && square[6] == '6')
-
-        //     square[6] = mark;
-        // else if (choice == 7 && square[7] == '7')
-
-        //     square[7] = mark;
-        // else if (choice == 8 && square[8] == '8')
-
-        //     square[8] = mark;
-        // else if (choice == 9 && square[9] == '9')
-
-        //     square[9] = mark;
-        
-        if(choice>0  &&  choice<10)
+        if(     (choice>0  &&  choice<10)
+            &&  (square[choice]== ('0'+choice) )  )
         {
-            if(square[choice]== ('0'+choice) )
-            {
-                square[choice]=mark;
-            }
+            square[choice]=mark;
         }
         else
         {
             cout<<"Invalid move ";
 
             player--;
-            cin.ignore();
-            cin.get();
-            // getc();
+      
+            string continu;
+
+            cout<<"You can press 0 to end this game and move to main menu"<<endl;
+            cout<<"Press any other number to continue"<<endl;
+            
+            cin>>continu;
+
+            if(continu=="0")
+            {
+                return;
+            }
         }
+        
         i=checkwin(square);
 
         player++;
+        
     }while(i==-1);
     
-    board(square);
+    board(square,false);
     
     if(i==1)
     {
@@ -238,7 +242,7 @@ void twoplayer(char square[])
     cin.get();
 }
 
-int checkwin(char square[])
+int checkwin(char* square)
 {
     if (square[1] == square[2] && square[2] == square[3])
     {
@@ -282,13 +286,21 @@ int checkwin(char square[])
     return -1;
 }
 
-void board(char square[])
+void board(char* square,bool isSinglePlayer=false)
 {
     system("cls");
     
     cout << "\n\n\tTic Tac Toe\n\n";
 
-    cout << "Player 1 (X)  -  Player 2 (O)" << endl << endl;
+    if(isSinglePlayer)
+    {
+        cout<<"Me (X)  -  You (O)"<<endl;
+    }
+    else
+    {
+        cout << "Player 1 (X)  -  Player 2 (O)" << endl;
+    }
+    
     cout << endl;
 
     cout << "     |     |     " << endl;
